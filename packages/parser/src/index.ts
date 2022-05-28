@@ -56,6 +56,8 @@ export class Phrase {
     const characters = this.originalPhrase
       .split('')
       .map((ch) => ch.codePointAt(0));
+    console.log('characters', this.originalPhrase
+      .split(''))
     for (let i = 0; i < characters.length; i++) {
       if (isIndependentVowel(characters[i]) || isConsonant(characters[i])) {
         const cluster = this.makeCluster();
@@ -88,6 +90,7 @@ export class Phrase {
 export default function transliterate(phrase: string, options: any = {}) {
   const { mode = TransliterationSystem.GD } = options;
   const transliterations = new Phrase(phrase).transliterate();
+  console.log('transliterations', new Phrase(phrase).clusters.map(cl => cl.length))
   const result = transliterations.flat().map((transliteration) => {
     if (!transliteration) {
       return '';

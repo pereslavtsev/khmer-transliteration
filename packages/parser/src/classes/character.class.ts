@@ -14,5 +14,15 @@ export abstract class Character {
 
   constructor(protected readonly context: CharacterContext) {}
 
+  get previous(): Character | null {
+    const { cluster, position } = this.context;
+    return cluster.characters[position - 1] ?? null;
+  }
+
+  get next(): Character | null {
+    const { cluster, position } = this.context;
+    return cluster.characters[position + 1] ?? null;
+  }
+
   abstract transliterate();
 }

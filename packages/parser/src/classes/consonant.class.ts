@@ -1,5 +1,6 @@
 import { ConsonantSeries } from '../enums';
 import { Character, CharacterOptions } from './character.class';
+import { VowelSign } from './vowel-sign.class';
 
 type ConsonantOptions = CharacterOptions & {
   series: typeof Consonant.Series;
@@ -25,7 +26,25 @@ export abstract class Consonant extends Character {
   static readonly Voiceless: Transliteration;
 
   hasSubscripts() {
-    return this.context.cluster.length > 1;
+    return this.next?.['constructor']['Code'] === 0x17d2; // TODO: !
+  }
+
+  hasBantoc() {
+    return this.next?.['constructor']['Code'] === 0x17cb; // TODO: !
+  }
+
+  hasDependentVowels() {
+    return this.context.cluster.characters.some(
+      (ch) => ch instanceof VowelSign,
+    );
+  }
+
+  isSubscript() {
+    return this.previous?.['constructor']['Code'] === 0x17d2; // TODO: !
+  }
+
+  isSingle() {
+    return this.context.cluster.length === 1;
   }
 
   get series() {
@@ -41,7 +60,21 @@ export abstract class Consonant extends Character {
   }
 
   transliterate() {
-    return !this.hasSubscripts() && !this.context.cluster.isLast
+    if (this.hasBantoc()) {
+      return this.voiceless;
+    }
+    if (this.hasSubscripts()) {
+      return this.voiceless;
+    }
+    if (this.hasDependentVowels()) {
+      return this.voiceless;
+    }
+    if (!this.hasDependentVowels() && !this.context.cluster.isLast) {
+      return this.voiced;
+    }
+    return !this.hasSubscripts() &&
+      !this.isSubscript &&
+      !this.context.cluster.isLast
       ? this.voiced
       : this.voiceless;
   }

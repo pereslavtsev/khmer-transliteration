@@ -1,6 +1,11 @@
 import { Character, CharacterOptions } from './character.class';
+import type { TransliterationSystem } from './consonant.class';
 
-type SignOptions = CharacterOptions;
+type SignOptions = CharacterOptions & {
+  transliterate?: (
+    context?: any,
+  ) => string | Partial<Record<TransliterationSystem, string>>;
+};
 
 export abstract class Sign extends Character {
   transliterate() {
@@ -8,8 +13,14 @@ export abstract class Sign extends Character {
   }
 }
 
-export function makeSign({ code }: SignOptions) {
+export function makeSign({ code, transliterate }: SignOptions) {
   return class extends Sign {
     static readonly Code = code;
+    transliterate() {
+      if (!transliterate) {
+        return super.transliterate();
+      }
+      return transliterate(this.context);
+    }
   };
 }
