@@ -1,9 +1,9 @@
 import { Character, CharacterOptions } from './character.class';
 import type { TransliterationSystem } from './consonant.class';
-import type { ConsonantSeries } from '../enums/consonant-series.enum';
+import type { ConsonantSeries } from '../enums';
+import { Consonant } from './consonant.class';
 
 type VowelSignOptions = CharacterOptions & {
-  code: typeof VowelSign.Code;
   pronunciations: typeof VowelSign.Pronunciations;
 };
 
@@ -11,8 +11,28 @@ type VowelSignPronunciation = Partial<
   Record<TransliterationSystem, Record<ConsonantSeries, string> | string>
 >;
 
-abstract class VowelSign extends Character {
+export abstract class VowelSign extends Character {
   static readonly Pronunciations: VowelSignPronunciation;
+
+  get series(): ConsonantSeries {
+    const { cluster, position } = this.context;
+    const consonant = cluster.characters
+      .slice(0, position)
+      .reverse()
+      .find((ch) => ch instanceof Consonant) as Consonant;
+    return consonant.series;
+  }
+
+  transliterate() {
+    const pronunciations: VowelSignPronunciation =
+      this['constructor']['Pronunciations'];
+    return Object.fromEntries(
+      Object.entries(pronunciations).map(([system, pronunciation]) => [
+        system,
+        pronunciation[this.series],
+      ]),
+    );
+  }
 }
 
 export function makeVowelSign({ code, pronunciations }: VowelSignOptions) {

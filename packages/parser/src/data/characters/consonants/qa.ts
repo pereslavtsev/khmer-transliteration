@@ -2,7 +2,7 @@ import { makeConsonant } from '../../../classes';
 
 export const Qa = makeConsonant({
   code: 0x17a2,
-  series: 0,
+  series: 1,
   voiced: {
     GD: '\u2019a',
   },

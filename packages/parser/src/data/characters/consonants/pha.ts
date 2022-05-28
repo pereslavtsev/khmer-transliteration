@@ -2,7 +2,7 @@ import { makeConsonant } from '../../../classes';
 
 export const Pha = makeConsonant({
   code: 0x1795,
-  series: 0,
+  series: 1,
   voiced: {
     GD: 'pha',
   },

@@ -2,7 +2,7 @@ import { makeConsonant } from '../../../classes';
 
 export const Mo = makeConsonant({
   code: 0x1798,
-  series: 1,
+  series: 2,
   voiced: {
     GD: 'mo',
   },

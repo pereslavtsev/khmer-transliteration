@@ -1,4 +1,4 @@
-import { ConsonantSeries } from '../enums/consonant-series.enum';
+import { ConsonantSeries } from '../enums';
 import { Character, CharacterOptions } from './character.class';
 
 type ConsonantOptions = CharacterOptions & {
@@ -16,13 +16,35 @@ export enum TransliterationSystem {
 
 type Transliteration = Partial<Record<TransliterationSystem, string>>;
 
-abstract class Consonant extends Character {
+export abstract class Consonant extends Character {
   static readonly Series:
     | ConsonantSeries
     | ConsonantSeries[keyof ConsonantSeries];
 
   static readonly Voiced: Transliteration;
   static readonly Voiceless: Transliteration;
+
+  hasSubscripts() {
+    return this.context.cluster.length > 1;
+  }
+
+  get series() {
+    return this['constructor']['Series'];
+  }
+
+  get voiced(): Transliteration {
+    return this['constructor']['Voiced'];
+  }
+
+  get voiceless(): Transliteration {
+    return this['constructor']['Voiceless'];
+  }
+
+  transliterate() {
+    return !this.hasSubscripts() && !this.context.cluster.isLast
+      ? this.voiced
+      : this.voiceless;
+  }
 
   toString() {
     return String.fromCodePoint(Consonant.Code);
@@ -40,9 +62,5 @@ export function makeConsonant({
     static readonly Code = code;
     static readonly Voiced: Transliteration = voiced;
     static readonly Voiceless: Transliteration = voiceless;
-
-    constructor() {
-      super();
-    }
   };
 }

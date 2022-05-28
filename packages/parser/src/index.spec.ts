@@ -2,6 +2,6 @@ import transliterate from './index';
 
 describe('', () => {
   it('should ', () => {
-    transliterate('សន្តិភាព');
+    expect(transliterate('សន្តិភាព')).toBe('santepheap');
   });
 });

@@ -2,7 +2,7 @@ import { makeConsonant } from '../../../classes';
 
 export const Cho = makeConsonant({
   code: 0x1788,
-  series: 1,
+  series: 2,
   voiced: {
     GD: 'chho',
   },
