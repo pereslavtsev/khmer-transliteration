@@ -1,19 +1,13 @@
 import { ConsonantSeries } from '../enums';
 import { Character, CharacterOptions } from './character.class';
 import { VowelSign } from './vowel-sign.class';
+import type { TransliterationSystem } from '../enums';
 
 type ConsonantOptions = CharacterOptions & {
   series: typeof Consonant.Series;
   voiced: typeof Consonant.Voiced;
   voiceless: typeof Consonant.Voiceless;
 };
-
-export enum TransliterationSystem {
-  'ALA-LC' = 'ALA-LC',
-  GD = 'GD',
-  IPA = 'IPA',
-  UNGEGN = 'UNGEGN',
-}
 
 type Transliteration = Partial<Record<TransliterationSystem, string>>;
 

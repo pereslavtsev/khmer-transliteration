@@ -4,8 +4,8 @@ import {
   IndependentVowels,
   DependentVowels,
 } from './data';
-import { Cluster, TransliterationSystem } from './classes';
-import { Coeng } from './data/characters/diacritics';
+import { Cluster } from './classes';
+import { TransliterationSystem } from './enums';
 
 const CHARACTER_MAP = new Map(
   [
@@ -56,8 +56,7 @@ export class Phrase {
     const characters = this.originalPhrase
       .split('')
       .map((ch) => ch.codePointAt(0));
-    console.log('characters', this.originalPhrase
-      .split(''))
+    console.log('characters', this.originalPhrase.split(''));
     for (let i = 0; i < characters.length; i++) {
       if (isIndependentVowel(characters[i]) || isConsonant(characters[i])) {
         const cluster = this.makeCluster();
@@ -66,7 +65,7 @@ export class Phrase {
           if (
             isDiacritics(characters[j]) ||
             isDependentVowel(characters[j]) ||
-            characters[j - 1] === Coeng.Code
+            characters[j - 1] === Diacritics.Coeng.Code
           ) {
             cluster.push(characters[j]);
             i = j;
@@ -83,27 +82,30 @@ export class Phrase {
   }
 
   transliterate() {
-    return this.clusters.map((c) => c.transliterate());
+    const transliterations = this.clusters.map((c) => c.transliterate());
+    return {
+      toString: (options: any = {}) => {
+        const { mode = TransliterationSystem.GD } = options;
+        const result = transliterations.flat().map((transliteration) => {
+          if (!transliteration) {
+            return '';
+          }
+          switch (typeof transliteration) {
+            case 'object': {
+              return transliteration[mode];
+            }
+            case 'string':
+            default: {
+              return transliteration;
+            }
+          }
+        });
+        return result.join('');
+      },
+    };
   }
 }
 
 export default function transliterate(phrase: string, options: any = {}) {
-  const { mode = TransliterationSystem.GD } = options;
-  const transliterations = new Phrase(phrase).transliterate();
-  console.log('transliterations', new Phrase(phrase).clusters.map(cl => cl.length))
-  const result = transliterations.flat().map((transliteration) => {
-    if (!transliteration) {
-      return '';
-    }
-    switch (typeof transliteration) {
-      case 'object': {
-        return transliteration[mode];
-      }
-      case 'string':
-      default: {
-        return transliteration;
-      }
-    }
-  });
-  return result.join('');
+  return new Phrase(phrase).transliterate().toString();
 }

@@ -1,5 +1,5 @@
 import { Character, CharacterOptions } from './character.class';
-import type { TransliterationSystem } from './consonant.class';
+import type { TransliterationSystem } from '../enums';
 import type { ConsonantSeries } from '../enums';
 import { Consonant } from './consonant.class';
 

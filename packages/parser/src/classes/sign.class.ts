@@ -1,5 +1,5 @@
 import { Character, CharacterOptions } from './character.class';
-import type { TransliterationSystem } from './consonant.class';
+import type { TransliterationSystem } from '../enums';
 
 type SignOptions = CharacterOptions & {
   transliterate?: (
