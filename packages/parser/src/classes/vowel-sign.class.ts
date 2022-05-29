@@ -19,7 +19,7 @@ export abstract class VowelSign extends Character {
     const consonant = cluster.characters
       .slice(0, position)
       .reverse()
-      .find((ch) => ch instanceof Consonant && !ch.isSubscript()) as Consonant;
+      .find((ch) => ch instanceof Consonant && !ch.isSubscript) as Consonant;
     return consonant.series;
   }
 

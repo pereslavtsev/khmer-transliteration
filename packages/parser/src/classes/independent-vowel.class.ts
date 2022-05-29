@@ -22,9 +22,11 @@ export abstract class IndependentVowel extends Character {
 export function makeIndependentVowel({
   code,
   pronunciations,
+  obsolete,
 }: IndependentVowelOptions) {
   return class extends IndependentVowel {
     static readonly Code = code;
     static readonly Pronunciations = pronunciations;
+    static readonly Obsolete = obsolete;
   };
 }

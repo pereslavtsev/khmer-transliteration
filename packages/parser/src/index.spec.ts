@@ -2,7 +2,7 @@ import transliterate from './index';
 
 describe('', () => {
   it('should ', () => {
-    expect(transliterate('បាត់ដំបង')).toBe('battambang');
+    expect(transliterate('វត្តឯកភ្នំ')).toBe('kamrieng');
   });
 
   // it('should ', () => {

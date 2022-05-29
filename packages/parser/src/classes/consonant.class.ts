@@ -33,7 +33,7 @@ export abstract class Consonant extends Character {
     );
   }
 
-  isSubscript() {
+  get isSubscript() {
     return this.previous?.['constructor']['Code'] === 0x17d2; // TODO: !
   }
 
@@ -72,10 +72,6 @@ export abstract class Consonant extends Character {
       ? this.voiced
       : this.voiceless;
   }
-
-  toString() {
-    return String.fromCodePoint(Consonant.Code);
-  }
 }
 
 export function makeConsonant({
@@ -83,10 +79,12 @@ export function makeConsonant({
   series,
   voiced,
   voiceless,
+  obsolete,
 }: ConsonantOptions) {
   return class extends Consonant {
     static readonly Series = series;
     static readonly Code = code;
+    static readonly Obsolete = obsolete;
     static readonly Voiced: Transliteration = voiced;
     static readonly Voiceless: Transliteration = voiceless;
   };
