@@ -1,47 +1,16 @@
-import {
-  Diacritics,
-  Consonants,
-  IndependentVowels,
-  DependentVowels,
-} from './data';
+import { Diacritics } from './data';
 import { Cluster } from './classes';
 import { TransliterationSystem } from './enums';
-
-const CHARACTER_MAP = new Map(
-  [
-    ...Object.values(Consonants),
-    ...Object.values(Diacritics),
-    ...Object.values(IndependentVowels),
-    ...Object.values(DependentVowels),
-  ].map((cls) => [cls.Code, cls]),
-);
+import {
+  isConsonant,
+  isDependentVowel,
+  isDiacritics,
+  isIndependentVowel,
+} from './helpers';
+import { CHARACTER_MAP } from './consts';
 
 export function getCharacterClass(code: number) {
   return CHARACTER_MAP.get(code);
-}
-
-function isConsonant(code: number) {
-  return Object.values(Consonants)
-    .map((cls) => cls.Code)
-    .includes(code);
-}
-
-function isIndependentVowel(code: number) {
-  return Object.values(IndependentVowels)
-    .map((cls) => cls.Code)
-    .includes(code);
-}
-
-function isDiacritics(code: number) {
-  return Object.values(Diacritics)
-    .map((cls) => cls.Code)
-    .includes(code);
-}
-
-function isDependentVowel(code: number) {
-  return Object.values(DependentVowels)
-    .map((cls) => cls.Code)
-    .includes(code);
 }
 
 export class Phrase {
